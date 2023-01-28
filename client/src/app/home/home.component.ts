@@ -11,9 +11,7 @@ export class HomeComponent implements OnInit {
   users: any;
 
   constructor(private http: HttpClient) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnInit(): void {}
 
   getUser() {
     this.http.get('https://localhost:7096/api/users').subscribe({
