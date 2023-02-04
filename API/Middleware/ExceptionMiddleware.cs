@@ -16,7 +16,7 @@ namespace API.Middleware
             this.logger = logger;
             this.env = env;
         }
-
+            
         public async Task InvokeAsync(HttpContext context)
         {
             try
