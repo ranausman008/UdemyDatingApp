@@ -10,7 +10,7 @@ import { AccountService } from './account.service';
 import { getPaginatedResult, getPaginationHeaders } from './paginationHelper';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MembersService {
   baseUrl = environment.apiUrl;
@@ -19,15 +19,18 @@ export class MembersService {
   user: User | undefined;
   userParams: UserParams | undefined;
 
-  constructor(private http: HttpClient, private accountService: AccountService) {
+  constructor(
+    private http: HttpClient,
+    private accountService: AccountService
+  ) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
-      next: user => {
+      next: (user) => {
         if (user) {
           this.userParams = new UserParams(user);
           this.user = user;
         }
-      }
-    })
+      },
+    });
   }
 
   getUserParams() {
@@ -45,25 +48,32 @@ export class MembersService {
     }
     return;
   }
-  
+
   getMembers(userParams: UserParams) {
     const response = this.memberCache.get(Object.values(userParams).join('-'));
 
     if (response) return of(response);
 
-    let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
+    let params = getPaginationHeaders(
+      userParams.pageNumber,
+      userParams.pageSize
+    );
 
     params = params.append('minAge', userParams.minAge);
     params = params.append('maxAge', userParams.maxAge);
     params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
-    return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http).pipe(
-      map(response => {
+    return getPaginatedResult<Member[]>(
+      this.baseUrl + 'users',
+      params,
+      this.http
+    ).pipe(
+      map((response) => {
         this.memberCache.set(Object.values(userParams).join('-'), response);
         return response;
       })
-    )
+    );
   }
 
   getMember(username: string) {
@@ -80,9 +90,9 @@ export class MembersService {
     return this.http.put(this.baseUrl + 'users', member).pipe(
       map(() => {
         const index = this.members.indexOf(member);
-        this.members[index] = { ...this.members[index], ...member }
+        this.members[index] = { ...this.members[index], ...member };
       })
-    )
+    );
   }
 
   setMainPhoto(photoId: number) {
@@ -102,8 +112,10 @@ export class MembersService {
 
     params = params.append('predicate', predicate);
 
-    return getPaginatedResult<Member[]>(this.baseUrl + 'likes', params, this.http);
+    return getPaginatedResult<Member[]>(
+      this.baseUrl + 'likes',
+      params,
+      this.http
+    );
   }
-
-  
 }
