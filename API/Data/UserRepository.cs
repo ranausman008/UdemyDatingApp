@@ -38,11 +38,11 @@ namespace API.Data
             return await context.Users.FindAsync(id);
         }
 
-        public async Task<AppUser> GetUserByUserNameAsync(string usernamename)
+        public async Task<AppUser> GetUserByUserNameAsync(string username)
         {
             return await context.Users
                 .Include(p => p.Photos)
-                .SingleOrDefaultAsync(x => x.UserName == usernamename);  
+                .SingleOrDefaultAsync(x => x.UserName == username);  
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
