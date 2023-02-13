@@ -31,10 +31,8 @@ namespace API.Entities
         public List<Photo> Photos { get; set; } = new();
 
 
-        //public int GetAge()
-        //{
-        //    return DateOfBirth.CalculateAge();
-        //}
+        public List<UserLike> LikedByUser { get; set; }
+        public List<UserLike> LikedUser { get; set; }
 
     }
 }
